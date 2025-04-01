@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //var is a global scope/ function scope
+        var a=10
+        a=20
+        console.log(a)  //it can be reassigned and redeclared
+        // -----------------------------------
+        // let is a local scope/block scope
+        {
+        let b=20
+        b=40
+        console.log(b) //it can be reassigned
+        }
+        // console.log(b) - redeclared not possible
+        // ------------------------------------------------------
+        {
+        const c=30
+        console.log(c)
+        }
+        // console.log(c)
+        // c=50
+        // reassign and redeclare not possible
+    </script>
+</body>
+</html>
