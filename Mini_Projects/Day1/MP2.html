@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // Quiz questions and answers
+        const quiz = [
+            {
+                question: "What is the capital of France?",
+                choices: ["London", "Paris", "Berlin", "Madrid"],
+                answer: 1 // Paris is at index 1
+            },
+            {
+                question: "What runs in web browsers?",
+                choices: ["Java", "C", "Python", "JavaScript"],
+                answer: 3 // JavaScript is at index 3
+            }
+        ];
+
+        let score = 0;
+
+        // Ask questions one by one
+        for (let i = 0; i < quiz.length; i++) {
+            // Show question and choices
+            alert(`Question ${i + 1}: ${quiz[i].question}\n\nChoices:\n${quiz[i].choices.map((c, idx) => `${idx + 1}. ${c}`).join('\n')}`);
+
+            // Get user's answer
+            const userAnswer = parseInt(prompt("Enter the number of your answer:")) - 1;
+
+            // Check if answer is correct
+            if (userAnswer === quiz[i].answer) {
+                score++;
+                alert("Correct! ✅");
+            } else {
+                alert(`Wrong! ❌ The correct answer is: ${quiz[i].choices[quiz[i].answer]}`);
+            }
+        }
+
+        // Show final results
+        alert(`Quiz finished!\n\nYour score: ${score} out of ${quiz.length}`);
+
+    </script>
+</body>
+
+</html>

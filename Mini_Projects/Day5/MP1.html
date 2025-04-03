@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function calc(tamil, english, maths, science, social) {
+let total=0;
+let avg;
+            console.log("Total is =" + (total=tamil + english + maths + science + social));
+            console.log("Avg is =" + (avg=total / 5) + "%");
+
+            if (avg>=90){
+                console.log("grade is A");
+            }
+            else if (avg>=75 && avg<=89){
+                console.log("grade is B");
+            }
+            else if (avg>=50 && avg<74){
+                console.log("grade is C");
+            }
+            else{
+                console.log("grade is F");
+                
+            }
+        }
+        calc(80,90,60,70,60);
+    
+    </script>
+
+</html>
