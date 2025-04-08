@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // Product Inventory System Implementation
+        const inventorySystem = {
+            products: [
+                { name: 'Laptop', quantity: 10 },
+                { name: 'Phone', quantity: 20 },
+                { name: 'Tablet', quantity: 15 }
+            ],
+
+            // Method to add a product
+            addProduct: function (name, quantity) {
+                const existingProduct = this.products.find(
+                    product => product.name.toLowerCase() === name.toLowerCase()
+                );
+
+                if (existingProduct) {
+                    existingProduct.quantity += quantity;
+                    console.log(`Updated quantity of "${name}" to ${existingProduct.quantity}`);
+                } else {
+                    this.products.push({ name, quantity });
+                    console.log(`Added new product "${name}" with quantity ${quantity}`);
+                }
+                this.displayInventory();
+            },
+
+            // Method to remove a product
+            removeProduct: function (name) {
+                const initialLength = this.products.length;
+                this.products = this.products.filter(
+                    product => product.name.toLowerCase() !== name.toLowerCase()
+                );
+
+                if (this.products.length < initialLength) {
+                    console.log(`Removed product "${name}"`);
+                } else {
+                    console.log(`Product "${name}" not found in inventory`);
+                }
+                this.displayInventory();
+            },
+
+            // Method to display current inventory
+            displayInventory: function () {
+                console.log('\nCurrent Inventory:');
+                if (this.products.length === 0) {
+                    console.log('Inventory is empty');
+                } else {
+                    this.products.forEach((product, index) => {
+                        console.log(`${index + 1}. ${product.name} - ${product.quantity} units`);
+                    });
+                }
+            }
+        };
+
+        // Example Usage:
+        inventorySystem.displayInventory();
+        inventorySystem.addProduct('Monitor', 8);
+        inventorySystem.addProduct('Laptop', 5); // Updates existing
+        inventorySystem.removeProduct('Phone');
+        inventorySystem.removeProduct('Keyboard'); // Not found
+    </script>
+</body>
+
+</html>

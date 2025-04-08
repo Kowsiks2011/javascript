@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // Movie Booking System Implementation
+        const movieBookingSystem = {
+            movies: ['Inception', 'The Dark Knight', 'Interstellar', 'Tenet', 'Dunkirk'],
+
+            // Method to book a movie
+            bookMovie: function (movieName) {
+                // Check if movie exists (case-insensitive)
+                const foundMovie = this.movies.find(
+                    movie => movie.toLowerCase() === movieName.toLowerCase()
+                );
+
+                if (foundMovie) {
+                    console.log(`Ticket booked for "${foundMovie}"`);
+                    return true;
+                } else {
+                    console.log(`"${movieName}" is not available`);
+                    return false;
+                }
+            },
+
+            // Method to display available movies
+            showMovies: function () {
+                console.log('Available Movies:');
+                this.movies.forEach((movie, index) => {
+                    console.log(`${index + 1}. ${movie}`);
+                });
+            }
+        };
+
+        // Example Usage:
+        movieBookingSystem.showMovies();
+        movieBookingSystem.bookMovie('interstellar'); // Ticket booked for "Interstellar"
+        movieBookingSystem.bookMovie('Avatar');      // "Avatar" is not available
+    </script>
+</body>
+
+</html>
