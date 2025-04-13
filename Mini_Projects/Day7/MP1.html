@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Employee Constructor
+function Employee(name, position, salary) {
+    this.name = name;
+    this.position = position;
+    this.salary = salary;
+    
+    // Method to increase salary
+    this.increaseSalary = function(percentage) {
+        const increaseAmount = this.salary * (percentage / 100);
+        this.salary += increaseAmount;
+        return increaseAmount;
+    };
+}
+
+// Employee Database
+const employeeDB = {
+    employees: [],
+    
+    // Add new employee
+    addEmployee: function(name, position, salary) {
+        const newEmployee = new Employee(name, position, salary);
+        this.employees.push(newEmployee);
+        return newEmployee;
+    },
+    
+    // Display all employees
+    displayEmployees: function() {
+        console.log("Employee List:");
+        console.log("------------------------------------------");
+        console.log("| Name\t\t| Position\t| Salary\t|");
+        console.log("------------------------------------------");
+        
+        this.employees.forEach(emp => {
+            console.log(`| ${emp.name}\t| ${emp.position}\t| $${emp.salary}\t|`);
+        });
+        
+        console.log("------------------------------------------");
+        console.log(`Total Employees: ${this.employees.length}`);
+    },
+    
+    // Increase salary for employee
+    increaseSalary: function(employeeName, percentage) {
+        const employee = this.employees.find(emp => emp.name === employeeName);
+        if (employee) {
+            const increase = employee.increaseSalary(percentage);
+            console.log(`Increased ${employeeName}'s salary by ${percentage}% ($${increase.toFixed(2)})`);
+            console.log(`New salary: $${employee.salary.toFixed(2)}`);
+        } else {
+            console.log(`Employee ${employeeName} not found`);
+        }
+    }
+};
+
+// Example Usage:
+employeeDB.addEmployee("John Doe", "Developer", 75000);
+employeeDB.addEmployee("Jane Smith", "Manager", 90000);
+employeeDB.displayEmployees();
+employeeDB.increaseSalary("John Doe", 10);
+employeeDB.displayEmployees();
+    </script>
+</body>
+</html>

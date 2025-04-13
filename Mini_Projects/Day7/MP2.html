@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Book Constructor
+function Book(title, author, year) {
+    this.title = title;
+    this.author = author;
+    this.year = year;
+    
+    // Method to get book info
+    this.getInfo = function() {
+        return `${this.title} by ${this.author} (${this.year})`;
+    };
+}
+
+// Library Database
+const library = {
+    books: [],
+    
+    // Add new book
+    addBook: function(title, author, year) {
+        const newBook = new Book(title, author, year);
+        this.books.push(newBook);
+        return newBook;
+    },
+    
+    // Display all books
+    displayBooks: function() {
+        console.log("Library Catalog:");
+        console.log("------------------------------------------");
+        console.log("| Title\t\t| Author\t| Year\t|");
+        console.log("------------------------------------------");
+        
+        this.books.forEach(book => {
+            console.log(`| ${book.title}\t| ${book.author}\t| ${book.year}\t|`);
+        });
+        
+        console.log("------------------------------------------");
+        console.log(`Total Books: ${this.books.length}`);
+    },
+    
+    // Find book by title
+    findBookByTitle: function(title) {
+        const foundBooks = this.books.filter(book => 
+            book.title.toLowerCase().includes(title.toLowerCase())
+        );
+        
+        if (foundBooks.length > 0) {
+            console.log(`Found ${foundBooks.length} book(s) matching "${title}":`);
+            foundBooks.forEach(book => console.log(`- ${book.getInfo()}`));
+        } else {
+            console.log(`No books found matching "${title}"`);
+        }
+        
+        return foundBooks;
+    },
+    
+    // Filter books by year
+    filterBooksByYear: function(minYear, maxYear) {
+        const filteredBooks = this.books.filter(book => 
+            book.year >= minYear && book.year <= maxYear
+        );
+        
+        console.log(`Books published between ${minYear} and ${maxYear}:`);
+        filteredBooks.forEach(book => console.log(`- ${book.getInfo()}`));
+        
+        return filteredBooks;
+    }
+};
+
+// Example Usage:
+library.addBook("The Great Gatsby", "F. Scott Fitzgerald", 1925);
+library.addBook("To Kill a Mockingbird", "Harper Lee", 1960);
+library.addBook("1984", "George Orwell", 1949);
+library.displayBooks();
+library.findBookByTitle("great");
+library.filterBooksByYear(1940, 1960);
+    </script>
+</body>
+</html>
