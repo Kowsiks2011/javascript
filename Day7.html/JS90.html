@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function ShoppingCart() {
+    this.products = [];
+    this.addProduct = function(product) {
+        this.products.push(product);
+    };
+    this.removeProduct = function(productName) {
+        this.products = this.products.filter(p => p.name !== productName);
+    };
+    this.getTotalPrice = function() {
+        return this.products.reduce((total, product) => total + product.price, 0);
+    };
+}
+
+const cart = new ShoppingCart();
+cart.addProduct({name: 'Shirt', price: 25});
+cart.addProduct({name: 'Pants', price: 40});
+console.log(cart.getTotalPrice()); // 65
+    </script>
+</body>
+</html>

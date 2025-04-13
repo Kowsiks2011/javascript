@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function Product(name, price) {
+    this.name = name;
+    this.price = price;
+    this.updatePrice = function(newPrice) {
+        this.price = newPrice;
+    };
+}
+
+const product = new Product('Laptop', 999);
+product.updatePrice(899);
+console.log(product.price); // 899
+    </script>
+</body>
+</html>

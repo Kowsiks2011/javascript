@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function Car(brand, model, year) {
+    this.brand = brand;
+    this.model = model;
+    this.year = year;
+    this.getAge = function() {
+        return new Date().getFullYear() - this.year;
+    };
+}
+
+const myCar = new Car('Toyota', 'Camry', 2018);
+console.log(myCar.getAge());
+    </script>
+</body>
+</html>

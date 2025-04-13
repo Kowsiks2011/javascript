@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function BankAccount(accountNumber, balance) {
+    this.accountNumber = accountNumber;
+    this.balance = balance;
+    this.deposit = function(amount) {
+        this.balance += amount;
+    };
+    this.withdraw = function(amount) {
+        if (amount <= this.balance) {
+            this.balance -= amount;
+        } else {
+            console.log('Insufficient funds');
+        }
+    };
+}
+
+const account = new BankAccount('123456', 1000);
+account.deposit(500);
+account.withdraw(200);
+console.log(account.balance); // 1300
+    </script>
+</body>
+</html>
