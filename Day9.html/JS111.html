@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id="myPara">This is a paragraph.</p>
+<button id="fontBtn">Increase Font Size</button>
+
+<script>
+  const fontBtn = document.getElementById("fontBtn");
+  const para = document.getElementById("myPara");
+  let fontSize = 16;
+
+  fontBtn.addEventListener("click", () => {
+    fontSize += 2;
+    para.style.fontSize = `${fontSize}px`;
+  });
+</script>
+</body>
+</html>

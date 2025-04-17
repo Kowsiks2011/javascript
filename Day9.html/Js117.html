@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="myDiv">
+        <p>Item 1</p>
+        <p>Item 2</p>
+      </div>
+      <button id="clearBtn">Clear Div</button>
+      
+      <script>
+        document.getElementById("clearBtn").addEventListener("click", () => {
+          const div = document.getElementById("myDiv");
+          div.innerHTML = "";
+        });
+      </script>
+</body>
+</html>

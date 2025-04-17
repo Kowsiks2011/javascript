@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="toggleBtn">Toggle Element</button>
+<div id="toggleElement">This element will hide/show.</div>
+
+<script>
+  const btn = document.getElementById("toggleBtn");
+  const element = document.getElementById("toggleElement");
+
+  btn.addEventListener("click", () => {
+    element.style.display = element.style.display === "none" ? "block" : "none";
+  });
+</script>
+</body>
+</html>

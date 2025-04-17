@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id="toggleText">First Text</p>
+<button id="toggleBtn">Toggle Text</button>
+
+<script>
+  const toggleBtn = document.getElementById("toggleBtn");
+  const text = document.getElementById("toggleText");
+  let isFirstText = true;
+
+  toggleBtn.addEventListener("click", () => {
+    text.textContent = isFirstText ? "Second Text" : "First Text";
+    isFirstText = !isFirstText;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="container"></div>
+<button id="addHeadingBtn">Add Heading</button>
+
+<script>
+  document.getElementById("addHeadingBtn").addEventListener("click", () => {
+    const heading = document.createElement("h1");
+    heading.textContent = "New Heading";
+    document.getElementById("container").appendChild(heading);
+  });
+</script>
+</body>
+</html>
