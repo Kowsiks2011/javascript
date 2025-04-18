@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="soundButton">Play Sound</button>
+
+<script>
+  document.getElementById('soundButton').addEventListener('click', function() {
+    const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-09.mp3');
+    audio.play();
+  });
+</script>
+</body>
+</html>

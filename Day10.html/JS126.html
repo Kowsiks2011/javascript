@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="counterButton">Click Me (0)</button>
+
+<script>
+  let count = 0;
+  document.getElementById('counterButton').addEventListener('click', function() {
+    count++;
+    this.textContent = `Click Me (${count})`;
+  });
+</script>
+</body>
+</html>
