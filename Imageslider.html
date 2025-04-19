@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Image Slider</title>
+    <style>
+        .slider-container {
+            width: 600px;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+            margin: 0 auto;
+            border: 2px solid #333;
+        }
+        
+        .slider {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+        
+        .slide {
+            min-width: 100%;
+        }
+        
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Image Slider</h1>
+    
+    <div class="slider-container">
+        <div class="slider">
+            <div class="slide">
+                <img src="images/creta.jpg" alt="Nature 1">
+            </div>
+            <div class="slide">
+                <img src="images/Dezire.jpg" alt="Nature 2">
+            </div>
+            <div class="slide">
+                <img src="images/cab.jpg" alt="Nature 3">
+            </div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button id="prev">Previous</button>
+        <button id="next">Next</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slider = document.querySelector('.slider');
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev');
+            const nextBtn = document.getElementById('next');
+            
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            
+            function updateSlider() {
+                slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+            }
+            
+            function next() {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlider();
+            }
+            
+            function prev() {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                updateSlider();
+            }
+            
+            nextBtn.addEventListener('click', next);
+            prevBtn.addEventListener('click', prev);
+            
+            setInterval(next, 3000);
+        });
+    </script>
+</body>
+</html>
