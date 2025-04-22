@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Store answer
+function saveAnswer(questionId, answer) {
+  const quizData = JSON.parse(sessionStorage.getItem('quizData')) || {};
+  quizData[questionId] = answer;
+  sessionStorage.setItem('quizData', JSON.stringify(quizData));
+}
+
+// Get all answers
+function getQuizAnswers() {
+  return JSON.parse(sessionStorage.getItem('quizData')) || {};
+}
+
+// Example usage
+saveAnswer('q1', 'A');
+console.log(getQuizAnswers());
+    </script>
+</body>
+</html>

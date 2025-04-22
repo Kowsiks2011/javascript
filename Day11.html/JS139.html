@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Save todos
+function saveTodos(todos) {
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+// Get todos
+function getTodos() {
+  return JSON.parse(localStorage.getItem('todos')) || [];
+}
+
+// Example usage
+const todos = ['Buy milk', 'Walk dog'];
+saveTodos(todos);
+console.log(getTodos());
+    </script>
+</body>
+</html>

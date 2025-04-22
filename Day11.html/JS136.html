@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const form = document.getElementById('myForm');
+
+// Save form data
+form.addEventListener('input', (e) => {
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData);
+  sessionStorage.setItem('formData', JSON.stringify(data));
+});
+
+// Load form data on page load
+window.addEventListener('load', () => {
+  const savedData = sessionStorage.getItem('formData');
+  if (savedData) {
+    const data = JSON.parse(savedData);
+    Object.entries(data).forEach(([name, value]) => {
+      if (form.elements[name]) {
+        form.elements[name].value = value;
+      }
+    });
+  }
+});
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const button = document.getElementById('clickMe');
+
+button.addEventListener('click', () => {
+  let count = parseInt(localStorage.getItem('clickCount') || 0);
+  count++;
+  localStorage.setItem('clickCount', count);
+  button.textContent = `Clicked ${count} times`;
+});
+
+// Initialize
+button.textContent = `Clicked ${localStorage.getItem('clickCount') || 0} times`;
+    </script>
+</body>
+</html>

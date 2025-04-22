@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Add item to cart
+function addToCart(itemId, itemName) {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  cart.push({ id: itemId, name: itemName });
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+// Get cart items
+function getCartItems() {
+  return JSON.parse(localStorage.getItem('cart')) || [];
+}
+
+// Example usage
+addToCart(1, 'T-Shirt');
+console.log(getCartItems());
+    </script>
+</body>
+</html>
