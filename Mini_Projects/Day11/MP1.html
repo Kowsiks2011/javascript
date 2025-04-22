@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stopwatch</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+    #display { font-size: 3em; margin: 20px; }
+    button { padding: 10px 20px; font-size: 1em; margin: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Stopwatch</h1>
+  <div id="display">00:00:00</div>
+  <button id="startBtn">Start</button>
+  <button id="stopBtn">Stop</button>
+  <button id="resetBtn">Reset</button>
+  <script>
+    const display = document.getElementById('display');
+const startBtn = document.getElementById('startBtn');
+const stopBtn = document.getElementById('stopBtn');
+const resetBtn = document.getElementById('resetBtn');
+
+let startTime;
+let elapsedTime = 0;
+let timerInterval;
+
+// Load saved time from SessionStorage
+const savedTime = sessionStorage.getItem('stopwatchTime');
+if (savedTime) {
+  elapsedTime = parseInt(savedTime);
+  displayTime();
+}
+
+function displayTime() {
+  const milliseconds = elapsedTime % 1000;
+  const seconds = Math.floor((elapsedTime / 1000) % 60);
+  const minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
+  const hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+
+  display.textContent = 
+    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function startTimer() {
+  startTime = Date.now() - elapsedTime;
+  timerInterval = setInterval(() => {
+    elapsedTime = Date.now() - startTime;
+    sessionStorage.setItem('stopwatchTime', elapsedTime);
+    displayTime();
+  }, 10);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  elapsedTime = 0;
+  sessionStorage.removeItem('stopwatchTime');
+  displayTime();
+}
+
+startBtn.addEventListener('click', startTimer);
+stopBtn.addEventListener('click', stopTimer);
+resetBtn.addEventListener('click', resetTimer);
+  </script>
+</body>
+</html>
