@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class InventorySystem {
+  constructor() {
+    this.products = [
+      { id: 1, name: "Laptop", category: "Electronics", quantity: 10, price: 999 },
+      { id: 2, name: "Desk Chair", category: "Furniture", quantity: 15, price: 149 },
+      { id: 3, name: "Smartphone", category: "Electronics", quantity: 25, price: 699 }
+    ];
+  }
+
+  // Check stock availability by ID or name
+  checkStock(searchTerm) {
+    const product = this.products.find(p => 
+      p.id === searchTerm || p.name.toLowerCase() === searchTerm.toLowerCase()
+    );
+    
+    if (!product) return "Product not found";
+    return `${product.name} - Quantity: ${product.quantity}`;
+  }
+
+  // Update inventory (add or remove stock)
+  updateInventory(productId, quantityChange) {
+    const productIndex = this.products.findIndex(p => p.id === productId);
+    
+    if (productIndex === -1) return "Product not found";
+    
+    this.products[productIndex].quantity += quantityChange;
+    
+    if (this.products[productIndex].quantity < 0) {
+      this.products[productIndex].quantity = 0;
+      return "Warning: Stock cannot be negative. Set to 0.";
+    }
+    
+    return `Inventory updated. New quantity: ${this.products[productIndex].quantity}`;
+  }
+
+  // Calculate total inventory value
+  calculateTotalValue() {
+    return this.products.reduce((total, product) => {
+      return total + (product.quantity * product.price);
+    }, 0);
+  }
+
+  // Add new product
+  addProduct(id, name, category, quantity, price) {
+    this.products.push({ id, name, category, quantity, price });
+    return `${name} added to inventory`;
+  }
+}
+
+// Usage Example:
+const inventory = new InventorySystem();
+console.log(inventory.checkStock("Laptop")); // Check stock
+console.log(inventory.updateInventory(1, -2)); // Sell 2 laptops
+console.log(inventory.calculateTotalValue()); // Get total inventory value
+    </script>
+</body>
+</html>

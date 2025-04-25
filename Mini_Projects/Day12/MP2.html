@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class LibrarySystem {
+  constructor() {
+    this.books = [
+      { id: 1, title: "The Great Gatsby", author: "F. Scott Fitzgerald", genre: "Classic", isAvailable: true, borrower: null },
+      { id: 2, title: "To Kill a Mockingbird", author: "Harper Lee", genre: "Fiction", isAvailable: false, borrower: "John Doe" },
+      { id: 3, title: "1984", author: "George Orwell", genre: "Dystopian", isAvailable: true, borrower: null }
+    ];
+  }
+
+  // Search books by title, author, or genre
+  searchBooks(searchTerm) {
+    return this.books.filter(book => 
+      book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      book.genre.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
+
+  // Borrow a book
+  borrowBook(bookId, borrowerName) {
+    const book = this.books.find(b => b.id === bookId);
+    
+    if (!book) return "Book not found";
+    if (!book.isAvailable) return "Book is already checked out";
+    
+    book.isAvailable = false;
+    book.borrower = borrowerName;
+    return `${book.title} has been checked out by ${borrowerName}`;
+  }
+
+  // Return a book
+  returnBook(bookId) {
+    const book = this.books.find(b => b.id === bookId);
+    
+    if (!book) return "Book not found";
+    if (book.isAvailable) return "Book was not checked out";
+    
+    const borrower = book.borrower;
+    book.isAvailable = true;
+    book.borrower = null;
+    return `${book.title} has been returned by ${borrower}`;
+  }
+
+  // List available books
+  listAvailableBooks() {
+    return this.books.filter(book => book.isAvailable);
+  }
+
+  // Add new book
+  addBook(id, title, author, genre) {
+    this.books.push({ 
+      id, 
+      title, 
+      author, 
+      genre, 
+      isAvailable: true, 
+      borrower: null 
+    });
+    return `${title} added to library`;
+  }
+}
+
+// Usage Example:
+const library = new LibrarySystem();
+console.log(library.searchBooks("Fitzgerald")); // Search books
+console.log(library.borrowBook(1, "Alice")); // Borrow book
+console.log(library.listAvailableBooks()); // List available books
+console.log(library.returnBook(1)); // Return book
+    </script>
+</body>
+</html>
