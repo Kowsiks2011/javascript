@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function searchByName(array, query) {
+  return array.filter(item => 
+    item.name.toLowerCase().includes(query.toLowerCase())
+  );
+}
+console.log(searchByName(employees, "jo")); // Finds "John"
+    </script>
+</body>
+</html>

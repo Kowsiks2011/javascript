@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const products = [
+  { name: "Laptop", price: 999 },
+  { name: "Phone", price: 699 }
+];
+
+const foundProduct = products.find(product => product.name === "Laptop");
+console.log(foundProduct); // { name: "Laptop", price: 999 }
+    </script>
+</body>
+</html>
