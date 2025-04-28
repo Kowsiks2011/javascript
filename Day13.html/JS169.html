@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        fetch('data.json') // Assuming data.json has an array of countries
+  .then(response => response.json())
+  .then(countries => {
+    const select = document.createElement('select');
+    
+    countries.forEach(country => {
+      const option = document.createElement('option');
+      option.value = country.code;
+      option.textContent = country.name;
+      select.appendChild(option);
+    });
+    
+    document.body.appendChild(select);
+  });
+    </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Assuming we have a JSON file with an array of users
+let users = [
+  { id: 1, name: "John" },
+  { id: 2, name: "Jane" }
+];
+
+function addUser(newUser) {
+  users.push(newUser);
+  // In a real app, you would save this back to the file
+  console.log('Updated users:', users);
+}
+
+addUser({ id: 3, name: "Bob" });
+    </script>
+</body>
+</html>
