@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog</title>
+</head>
+<body>
+    <h1>Product Catalog</h1>
+    
+    <div>
+        <div>
+            <label>Max Price: $</label>
+            <input type="number" id="max-price" min="0" placeholder="500">
+            <button id="filter-btn">Filter</button>
+        </div>
+        
+        <div>
+            <label>Sort by:</label>
+            <select id="sort">
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="name-asc">Name: A-Z</option>
+                <option value="name-desc">Name: Z-A</option>
+            </select>
+        </div>
+    </div>
+    
+    <div id="product-grid"></div>
+    
+    <div id="product-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+        <div style="background:white; padding:20px; margin:50px auto; width:80%; max-width:600px;">
+            <span id="close-modal" style="float:right; cursor:pointer; font-size:20px;">&times;</span>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+    
+    <script>
+       document.addEventListener('DOMContentLoaded', function() {
+    const productGrid = document.getElementById('product-grid');
+    const filterBtn = document.getElementById('filter-btn');
+    const maxPriceInput = document.getElementById('max-price');
+    const sortSelect = document.getElementById('sort');
+    const modal = document.getElementById('product-modal');
+    const closeModal = document.getElementById('close-modal');
+    const modalContent = document.getElementById('modal-content');
+    
+    let products = [];
+    
+    // Sample products data (in a real app, you would fetch this from products.json)
+    products = [
+        { id: 1, name: "Laptop", price: 999, category: "Electronics", description: "High performance laptop with 16GB RAM" },
+        { id: 2, name: "Phone", price: 699, category: "Electronics", description: "Latest smartphone with great camera" },
+        { id: 3, name: "Tablet", price: 399, category: "Electronics", description: "Portable tablet with 10-inch display" },
+        { id: 4, name: "Headphones", price: 199, category: "Accessories", description: "Noise-cancelling wireless headphones" },
+        { id: 5, name: "Smartwatch", price: 249, category: "Accessories", description: "Fitness tracking smartwatch" }
+    ];
+    
+    // Display initial products
+    displayProducts(products);
+    
+    // Filter button click handler
+    filterBtn.addEventListener('click', function() {
+        const maxPrice = parseFloat(maxPriceInput.value) || Infinity;
+        const filteredProducts = products.filter(product => product.price <= maxPrice);
+        displayProducts(filteredProducts);
+    });
+    
+    // Sort select change handler
+    sortSelect.addEventListener('change', function() {
+        const sortValue = sortSelect.value;
+        let sortedProducts = [...products];
+        
+        switch(sortValue) {
+            case 'price-asc':
+                sortedProducts.sort((a, b) => a.price - b.price);
+                break;
+            case 'price-desc':
+                sortedProducts.sort((a, b) => b.price - a.price);
+                break;
+            case 'name-asc':
+                sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+            case 'name-desc':
+                sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
+                break;
+        }
+        
+        displayProducts(sortedProducts);
+    });
+    
+    // Close modal handler
+    closeModal.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+    
+    // Display products in grid
+    function displayProducts(productsToDisplay) {
+        productGrid.innerHTML = '';
+        
+        if (productsToDisplay.length === 0) {
+            productGrid.innerHTML = '<p>No products match your criteria.</p>';
+            return;
+        }
+        
+        productsToDisplay.forEach(product => {
+            const productCard = document.createElement('div');
+            productCard.style.border = '1px solid #ddd';
+            productCard.style.padding = '10px';
+            productCard.style.margin = '10px';
+            productCard.style.cursor = 'pointer';
+            productCard.innerHTML = `
+                <h3>${product.name}</h3>
+                <div>$${product.price.toFixed(2)}</div>
+                <div>${product.category}</div>
+            `;
+            
+            productCard.addEventListener('click', () => showProductDetails(product));
+            productGrid.appendChild(productCard);
+        });
+    }
+    
+    // Show product details in modal
+    function showProductDetails(product) {
+        modalContent.innerHTML = `
+            <h2>${product.name}</h2>
+            <p><strong>Price:</strong> $${product.price.toFixed(2)}</p>
+            <p><strong>Category:</strong> ${product.category}</p>
+            <p><strong>Description:</strong> ${product.description}</p>
+        `;
+        modal.style.display = 'block';
+    }
+}); 
+
+    </script>
+</body>
+</html>
