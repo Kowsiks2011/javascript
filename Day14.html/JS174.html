@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+      // HTML: <div id="weather"><input id="city-input" placeholder="Enter city"><button id="get-weather">Get Weather</button></div>
+
+document.getElementById('get-weather').addEventListener('click', async () => {
+  const city = document.getElementById('city-input').value;
+  if (!city) return;
+  
+  try {
+    // Note: In a real app, you'd use a proper weather API with your API key
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=YOUR_API_KEY&units=metric`);
+    const weather = await response.json();
+    
+    document.getElementById('weather').innerHTML += `
+      <div class="weather-card">
+        <h3>${weather.name}</h3>
+        <p>Temp: ${weather.main.temp}°C</p>
+        <p>${weather.weather[0].description}</p>
+      </div>
+    `;
+  } catch (error) {
+    console.error('Error fetching weather:', error);
+  }
+});  
+    </script>
+</body>
+</html>

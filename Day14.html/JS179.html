@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // HTML: <div id="exchange-rates"><input id="base-currency" placeholder="Base currency (e.g., USD)"><button id="get-rates">Get Rates</button></div>
+
+document.getElementById('get-rates').addEventListener('click', async () => {
+  const baseCurrency = document.getElementById('base-currency').value.toUpperCase();
+  if (!baseCurrency) return;
+  
+  try {
+    // Note: You'd need a real API key for a production app
+    const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${baseCurrency}`);
+    const data = await response.json();
+    
+    let ratesHTML = `<h3>Rates for ${baseCurrency}</h3><ul>`;
+    for (const [currency, rate] of Object.entries(data.rates)) {
+      if (currency !== baseCurrency) {
+        ratesHTML += `<li>1 ${baseCurrency} = ${rate} ${currency}</li>`;
+      }
+    }
+    ratesHTML += '</ul>';
+    
+    document.getElementById('exchange-rates').innerHTML += ratesHTML;
+  } catch (error) {
+    console.error('Error fetching rates:', error);
+  }
+});
+    </script>
+</body>
+</html>
