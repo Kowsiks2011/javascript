@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="typing-test">
+        <h2>Typing Speed Test</h2>
+        <div id="sentence-container"></div>
+        <textarea id="user-input" placeholder="Start typing here..."></textarea>
+        <button id="start-test">Start Test</button>
+        <button id="reset-test" disabled>Reset</button>
+        <div id="results">
+          <p>Time: <span id="time">0</span> seconds</p>
+          <p>Speed: <span id="speed">0</span> WPM</p>
+          <p>Accuracy: <span id="accuracy">0</span>%</p>
+        </div>
+      </div>
+      
+      <script>
+        let startTime, endTime;
+        let originalSentence = '';
+      
+        // Fetch random sentence from API
+        async function fetchRandomSentence() {
+          try {
+            const response = await fetch('https://api.quotable.io/random');
+            const data = await response.json();
+            return data.content;
+          } catch (error) {
+            console.error('Error fetching sentence:', error);
+            return "The quick brown fox jumps over the lazy dog."; // Fallback sentence
+          }
+        }
+      
+        // Calculate typing metrics
+        function calculateResults() {
+          const userText = document.getElementById('user-input').value;
+          const timeTaken = (endTime - startTime) / 1000; // in seconds
+          
+          // Calculate words per minute (WPM)
+          const wordCount = userText.trim().split(/\s+/).length;
+          const wpm = Math.round((wordCount / timeTaken) * 60);
+          
+          // Calculate accuracy
+          let correctChars = 0;
+          const minLength = Math.min(originalSentence.length, userText.length);
+          for (let i = 0; i < minLength; i++) {
+            if (originalSentence[i] === userText[i]) correctChars++;
+          }
+          const accuracy = Math.round((correctChars / originalSentence.length) * 100);
+          
+          // Display results
+          document.getElementById('time').textContent = timeTaken.toFixed(1);
+          document.getElementById('speed').textContent = wpm;
+          document.getElementById('accuracy').textContent = accuracy;
+        }
+      
+        // Event listeners
+        document.getElementById('start-test').addEventListener('click', async () => {
+          originalSentence = await fetchRandomSentence();
+          document.getElementById('sentence-container').textContent = originalSentence;
+          document.getElementById('user-input').value = '';
+          document.getElementById('user-input').focus();
+          document.getElementById('start-test').disabled = true;
+          document.getElementById('reset-test').disabled = false;
+          
+          startTime = new Date();
+          
+          // Enable results calculation when typing matches sentence length
+          document.getElementById('user-input').addEventListener('input', function() {
+            if (this.value.length === originalSentence.length) {
+              endTime = new Date();
+              calculateResults();
+              this.disabled = true;
+            }
+          });
+        });
+      
+        document.getElementById('reset-test').addEventListener('click', () => {
+          document.getElementById('sentence-container').textContent = '';
+          document.getElementById('user-input').value = '';
+          document.getElementById('user-input').disabled = false;
+          document.getElementById('start-test').disabled = false;
+          document.getElementById('reset-test').disabled = true;
+          document.getElementById('results').querySelectorAll('span').forEach(span => {
+            span.textContent = '0';
+          });
+        });
+      </script>
+</body>
+</html>

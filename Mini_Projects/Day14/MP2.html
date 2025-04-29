@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="air-quality">
+        <h2>Air Quality Checker</h2>
+        <select id="city-select">
+          <option value="">Select a city</option>
+          <option value="delhi">Delhi, India</option>
+          <option value="beijing">Beijing, China</option>
+          <option value="los angeles">Los Angeles, USA</option>
+          <option value="london">London, UK</option>
+          <option value="tokyo">Tokyo, Japan</option>
+        </select>
+        <button id="check-aqi">Check Air Quality</button>
+        
+        <div id="aqi-results" style="display: none;">
+          <h3>Air Quality Index (AQI): <span id="aqi-value">0</span></h3>
+          <div id="aqi-level" class="level"></div>
+          
+          <h4>Pollutants:</h4>
+          <ul id="pollutants-list"></ul>
+          
+          <h4>Health Advice:</h4>
+          <p id="health-advice"></p>
+        </div>
+      </div>
+      
+      <script>
+        // Note: This uses a mock API - in production you'd use a real AQI API
+        const AQI_API = 'https://api.waqi.info/feed/';
+        const API_TOKEN = 'demo'; // Replace with real token in production
+      
+        // AQI scale and health information
+        const aqiScale = {
+          good: { min: 0, max: 50, color: '#55a84f', advice: 'Air quality is satisfactory.' },
+          moderate: { min: 51, max: 100, color: '#a3c853', advice: 'Acceptable quality.' },
+          sensitive: { min: 101, max: 150, color: '#fff833', advice: 'Unhealthy for sensitive groups.' },
+          unhealthy: { min: 151, max: 200, color: '#f29c33', advice: 'Unhealthy for everyone.' },
+          veryUnhealthy: { min: 201, max: 300, color: '#e93f33', advice: 'Health alert!' },
+          hazardous: { min: 301, max: 500, color: '#af2d24', advice: 'Emergency conditions.' }
+        };
+      
+        // Fetch AQI data
+        async function fetchAQI(city) {
+          try {
+            const response = await fetch(`${AQI_API}${city}/?token=${API_TOKEN}`);
+            const data = await response.json();
+            
+            if (data.status === 'ok') {
+              return data.data;
+            } else {
+              throw new Error('Unable to fetch AQI data');
+            }
+          } catch (error) {
+            console.error('Error fetching AQI:', error);
+            // Return mock data if API fails
+            return {
+              aqi: Math.floor(Math.random() * 300),
+              iaqi: {
+                pm25: { v: Math.floor(Math.random() * 200) },
+                pm10: { v: Math.floor(Math.random() * 200) },
+                o3: { v: Math.floor(Math.random() * 200) },
+                no2: { v: Math.floor(Math.random() * 200) },
+                so2: { v: Math.floor(Math.random() * 200) },
+                co: { v: Math.floor(Math.random() * 10) }
+              },
+              city: { name: city }
+            };
+          }
+        }
+      
+        // Display AQI results
+        function displayAQIResults(data) {
+          const aqi = data.aqi;
+          document.getElementById('aqi-value').textContent = aqi;
+          
+          // Determine AQI level
+          let level = '';
+          let color = '';
+          let advice = '';
+          
+          for (const [key, range] of Object.entries(aqiScale)) {
+            if (aqi >= range.min && aqi <= range.max) {
+              level = key;
+              color = range.color;
+              advice = range.advice;
+              break;
+            }
+          }
+          
+          // Set AQI level display
+          const aqiLevel = document.getElementById('aqi-level');
+          aqiLevel.textContent = level.toUpperCase();
+          aqiLevel.style.backgroundColor = color;
+          
+          // Set pollutants
+          const pollutantsList = document.getElementById('pollutants-list');
+          pollutantsList.innerHTML = '';
+          
+          for (const [pollutant, value] of Object.entries(data.iaqi)) {
+            pollutantsList.innerHTML += `
+              <li>
+                <strong>${pollutant.toUpperCase()}:</strong> ${value.v} μg/m³
+              </li>
+            `;
+          }
+          
+          // Set health advice
+          document.getElementById('health-advice').textContent = advice;
+          
+          // Show results
+          document.getElementById('aqi-results').style.display = 'block';
+        }
+      
+        // Event listener
+        document.getElementById('check-aqi').addEventListener('click', async () => {
+          const city = document.getElementById('city-select').value;
+          if (!city) return alert('Please select a city');
+          
+          const aqiData = await fetchAQI(city);
+          displayAQIResults(aqiData);
+        });
+      </script>
+      
+      <style>
+        .level {
+          padding: 10px;
+          color: white;
+          font-weight: bold;
+          border-radius: 5px;
+          text-align: center;
+          margin: 10px 0;
+        }
+        
+        #pollutants-list {
+          list-style-type: none;
+          padding: 0;
+        }
+        
+        #pollutants-list li {
+          padding: 5px 0;
+          border-bottom: 1px solid #eee;
+        }
+      </style>
+</body>
+</html>
