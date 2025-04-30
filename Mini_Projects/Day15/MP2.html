@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class ApiLogger {
+    static MAX_LOG_ENTRIES = 100;
+    static STORAGE_KEY = 'apiResponseLogs';
+    
+    static async makeApiCall(url, options = {}) {
+        try {
+            const startTime = performance.now();
+            const response = await fetch(url, options);
+            const endTime = performance.now();
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            const duration = endTime - startTime;
+            
+            // Log successful response
+            this.logResponse({
+                url,
+                status: response.status,
+                duration,
+                timestamp: new Date().toISOString(),
+                data: this.sanitizeData(data),
+                error: null
+            });
+            
+            return data;
+            
+        } catch (error) {
+            // Log error response
+            this.logResponse({
+                url,
+                status: error.response?.status || 0,
+                timestamp: new Date().toISOString(),
+                error: {
+                    name: error.name,
+                    message: error.message,
+                    stack: error.stack
+                },
+                data: null
+            });
+            
+            console.error('API call failed:', error);
+            throw error;
+        }
+    }
+    
+    static logResponse(logEntry) {
+        try {
+            const logs = this.getLogs();
+            
+            logs.push(logEntry);
+            
+            // Keep only the most recent logs
+            if (logs.length > this.MAX_LOG_ENTRIES) {
+                logs.shift();
+            }
+            
+            localStorage.setItem(this.STORAGE_KEY, JSON.stringify(logs));
+        } catch (error) {
+            console.error('Failed to log API response:', error);
+        }
+    }
+    
+    static getLogs() {
+        try {
+            return JSON.parse(localStorage.getItem(this.STORAGE_KEY)) || [];
+        } catch (error) {
+            console.error('Failed to retrieve API logs:', error);
+            return [];
+        }
+    }
+    
+    static clearLogs() {
+        localStorage.removeItem(this.STORAGE_KEY);
+    }
+    
+    static sanitizeData(data) {
+        // Basic data sanitization to avoid storing sensitive information
+        if (typeof data !== 'object' || data === null) return data;
+        
+        const sanitized = {};
+        for (const key in data) {
+            if (key.toLowerCase().includes('password') || key.toLowerCase().includes('token')) {
+                sanitized[key] = '***REDACTED***';
+            } else if (typeof data[key] === 'object') {
+                sanitized[key] = this.sanitizeData(data[key]);
+            } else {
+                sanitized[key] = data[key];
+            }
+        }
+        return sanitized;
+    }
+    
+    static displayLogs() {
+        const logs = this.getLogs();
+        console.table(logs.map(log => ({
+            'Timestamp': log.timestamp,
+            'URL': log.url,
+            'Status': log.status || 'N/A',
+            'Duration (ms)': log.duration?.toFixed(2) || 'N/A',
+            'Error': log.error ? `${log.error.name}: ${log.error.message}` : 'None'
+        })));
+    }
+}
+
+// Example usage:
+(async function() {
+    try {
+        // Successful API call
+        const users = await ApiLogger.makeApiCall('https://jsonplaceholder.typicode.com/users');
+        console.log('Users:', users);
+        
+        // Failed API call
+        await ApiLogger.makeApiCall('https://jsonplaceholder.typicode.com/nonexistent');
+        
+    } catch (error) {
+        console.error('Error in example usage:', error);
+    } finally {
+        // Display all logs
+        ApiLogger.displayLogs();
+    }
+})();
+    </script>
+</body>
+</html>
