@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <script>
+    class ErrorLogger {
+    static MAX_LOG_ENTRIES = 50;
+    
+    static logError(error) {
+        try {
+            const errorLog = JSON.parse(localStorage.getItem('errorLog')) || [];
+            
+            errorLog.push({
+                timestamp: new Date().toISOString(),
+                message: error.message,
+                stack: error.stack,
+                type: error.name
+            });
+            
+            // Keep only the most recent errors
+            if (errorLog.length > this.MAX_LOG_ENTRIES) {
+                errorLog.shift();
+            }
+            
+            localStorage.setItem('errorLog', JSON.stringify(errorLog));
+        } catch (storageError) {
+            console.error('Failed to log error:', storageError.message);
+        }
+    }
+    
+    static getErrorLog() {
+        try {
+            return JSON.parse(localStorage.getItem('errorLog')) || [];
+        } catch (error) {
+            console.error('Failed to retrieve error log:', error.message);
+            return [];
+        }
+    }
+    
+    static clearErrorLog() {
+        localStorage.removeItem('errorLog');
+    }
+}
+
+// Example usage
+try {
+    // Code that might throw an error
+    undefinedFunction();
+} catch (error) {
+    ErrorLogger.logError(error);
+}
+
+// Display errors in console
+console.table(ErrorLogger.getErrorLog());
+   </script> 
+</body>
+</html>

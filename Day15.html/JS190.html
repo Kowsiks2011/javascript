@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <script>
+    function processData(data) {
+    if (!data) {
+        console.error('Error: No data provided');
+        return;
+    }
+    
+    if (data.length > 100) {
+        console.warn('Warning: Large dataset may impact performance');
+    }
+    
+    // Process data
+    console.log('Data processed successfully');
+}
+
+processData();
+processData(new Array(150).fill(0));
+   </script> 
+</body>
+</html>

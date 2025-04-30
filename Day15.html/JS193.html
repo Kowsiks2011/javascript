@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <script>
+    function processFile() {
+    let fileHandle;
+    try {
+        fileHandle = openFile('example.txt');
+        const content = readFile(fileHandle);
+        console.log('File content:', content);
+    } catch (error) {
+        console.error('File processing error:', error.message);
+    } finally {
+        if (fileHandle) {
+            closeFile(fileHandle);
+            console.log('File handle closed');
+        }
+    }
+}
+
+// Mock functions
+function openFile() { throw new Error('File not found'); }
+function readFile() { return 'content'; }
+function closeFile() {}
+
+processFile();
+   </script> 
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <script>
+    function checkNumber(input) {
+    try {
+        if (typeof input !== 'number' || isNaN(input)) {
+            throw new TypeError('Input must be a valid number');
+        }
+        console.log('Valid number:', input);
+    } catch (error) {
+        if (error instanceof TypeError) {
+            console.error('Type Error:', error.message);
+        } else {
+            console.error('Other error:', error.message);
+        }
+    }
+}
+
+checkNumber('not a number');
+   </script> 
+</body>
+</html>

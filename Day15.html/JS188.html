@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <script>
+    try {
+    try {
+        const result = someUndefinedFunction();
+    } catch (innerError) {
+        if (innerError instanceof ReferenceError) {
+            console.log('Inner ReferenceError:', innerError.message);
+            throw new Error('Propagated from inner block');
+        }
+    }
+} catch (outerError) {
+    console.log('Outer Error:', outerError.message);
+}
+   </script> 
+</body>
+</html>
