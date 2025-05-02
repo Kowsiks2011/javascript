@@ -1,0 +1,78 @@
+<div>
+    <h2>Task Manager</h2>
+    <input id="task" placeholder="Task">
+    <select id="category">
+      <option>Work</option>
+      <option>Personal</option>
+      <option>Study</option>
+    </select>
+    <input id="dueDate" type="date">
+    <button onclick="addTask()">Add</button>
+    
+    <div>
+      <button onclick="filterTasks('all')">All</button>
+      <button onclick="filterTasks('completed')">Completed</button>
+      <button onclick="sortTasks()">Sort by Date</button>
+    </div>
+    
+    <ul id="taskList"></ul>
+  </div>
+  
+  <script>
+  let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  
+  function renderTasks(list = tasks) {
+    const ul = document.getElementById('taskList');
+    ul.innerHTML = '';
+    
+    list.forEach((task, i) => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <input type="checkbox" ${task.completed ? 'checked' : ''} 
+               onchange="toggleComplete(${i})">
+        ${task.text} (${task.category}) - Due: ${task.dueDate}
+        <button onclick="deleteTask(${i})">Delete</button>
+      `;
+      if(task.completed) li.style.textDecoration = 'line-through';
+      ul.appendChild(li);
+    });
+  }
+  
+  function addTask() {
+    tasks.push({
+      text: document.getElementById('task').value,
+      category: document.getElementById('category').value,
+      dueDate: document.getElementById('dueDate').value,
+      completed: false
+    });
+    saveTasks();
+    renderTasks();
+  }
+  
+  function toggleComplete(index) {
+    tasks[index].completed = !tasks[index].completed;
+    saveTasks();
+    renderTasks();
+  }
+  
+  function deleteTask(index) {
+    tasks.splice(index, 1);
+    saveTasks();
+    renderTasks();
+  }
+  
+  function filterTasks(type) {
+    if(type === 'completed') renderTasks(tasks.filter(t => t.completed));
+    else renderTasks();
+  }
+  
+  function sortTasks() {
+    renderTasks([...tasks].sort((a,b) => new Date(a.dueDate) - new Date(b.dueDate)));
+  }
+  
+  function saveTasks() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+  
+  renderTasks();
+  </script>

@@ -1,0 +1,72 @@
+<div>
+    <h2>Bookstore</h2>
+    <input id="title" placeholder="Title">
+    <input id="author" placeholder="Author">
+    <input id="price" placeholder="Price" type="number">
+    <select id="bookCategory">
+      <option>Fiction</option>
+      <option>Non-Fiction</option>
+      <option>Science</option>
+    </select>
+    <button onclick="addBook()">Add Book</button>
+    
+    <input id="bookSearch" placeholder="Search books" oninput="searchBooks()">
+    <select id="categoryFilter" onchange="filterBooks()">
+      <option value="">All Categories</option>
+      <option>Fiction</option>
+      <option>Non-Fiction</option>
+      <option>Science</option>
+    </select>
+    
+    <div id="books"></div>
+    <h3>Cart (<span id="cartCount">0</span>)</h3>
+    <div id="cart"></div>
+  </div>
+  
+  <script>
+  let books = JSON.parse(localStorage.getItem('books')) || [];
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  
+  function renderBooks(list = books) {
+    const div = document.getElementById('books');
+    div.innerHTML = '';
+    
+    list.forEach((book, i) => {
+      const bookDiv = document.createElement('div');
+      bookDiv.innerHTML = `
+        <h4>${book.title} by ${book.author}</h4>
+        <p>$${book.price} | ${book.category}</p>
+        <button onclick="addToCart(${i})">Add to Cart</button>
+      `;
+      div.appendChild(bookDiv);
+    });
+  }
+  
+  function addBook() {
+    books.push({
+      title: document.getElementById('title').value,
+      author: document.getElementById('author').value,
+      price: document.getElementById('price').value,
+      category: document.getElementById('bookCategory').value
+    });
+    saveBooks();
+    renderBooks();
+  }
+  
+  function searchBooks() {
+    const term = document.getElementById('bookSearch').value.toLowerCase();
+    renderBooks(books.filter(b => 
+      b.title.toLowerCase().includes(term) || 
+      b.author.toLowerCase().includes(term)
+    ));
+  }
+  
+  function filterBooks() {
+    const category = document.getElementById('categoryFilter').value;
+    renderBooks(category ? books.filter(b => b.category === category) : books);
+  }
+  
+  function addToCart(index) {
+    cart.push(books[index]);
+    saveCart();
+    renderCart();}

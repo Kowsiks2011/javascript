@@ -1,0 +1,76 @@
+<div>
+    <h2>Employee Attendance</h2>
+    <input id="empName" placeholder="Name">
+    <input id="empId" placeholder="ID">
+    <input id="empDept" placeholder="Department">
+    <button onclick="addEmployee()">Add Employee</button>
+    
+    <div>
+      <button onclick="filterEmployees('all')">All</button>
+      <button onclick="filterEmployees('Present')">Present</button>
+      <button onclick="filterEmployees('Absent')">Absent</button>
+      <button onclick="sortEmployees()">Sort by Name</button>
+    </div>
+    
+    <table id="employees" border="1" style="width:100%">
+      <tr><th>Name</th><th>ID</th><th>Department</th><th>Status</th><th>Action</th></tr>
+    </table>
+  </div>
+  
+  <script>
+  let employees = JSON.parse(localStorage.getItem('employees')) || [];
+  
+  function renderEmployees(list = employees) {
+    const table = document.getElementById('employees');
+    while(table.rows.length > 1) table.deleteRow(1);
+    
+    list.forEach((emp, i) => {
+      const row = table.insertRow();
+      row.innerHTML = `
+        <td>${emp.name}</td>
+        <td>${emp.id}</td>
+        <td>${emp.department}</td>
+        <td>${emp.status || '-'}</td>
+        <td>
+          <select onchange="updateStatus(${i}, this.value)">
+            <option value="">Select</option>
+            <option>Present</option>
+            <option>Absent</option>
+          </select>
+        </td>
+      `;
+    });
+  }
+  
+  function addEmployee() {
+    employees.push({
+      name: document.getElementById('empName').value,
+      id: document.getElementById('empId').value,
+      department: document.getElementById('empDept').value,
+      status: ''
+    });
+    saveEmployees();
+    renderEmployees();
+  }
+  
+  function updateStatus(index, status) {
+    employees[index].status = status;
+    saveEmployees();
+    renderEmployees();
+  }
+  
+  function filterEmployees(status) {
+    if(status === 'all') renderEmployees();
+    else renderEmployees(employees.filter(emp => emp.status === status));
+  }
+  
+  function sortEmployees() {
+    renderEmployees([...employees].sort((a,b) => a.name.localeCompare(b.name)));
+  }
+  
+  function saveEmployees() {
+    localStorage.setItem('employees', JSON.stringify(employees));
+  }
+  
+  renderEmployees();
+  </script>

@@ -1,0 +1,23 @@
+<div>
+    Loan Amount: <input id="amount"><br>
+    Interest (%): <input id="rate"><br>
+    Years: <input id="years"><br>
+    <button onclick="calculate()">Calculate</button>
+    <div id="result"></div>
+  </div>
+  
+  <script>
+    function calculate() {
+      const p = parseFloat(document.getElementById('amount').value);
+      const r = parseFloat(document.getElementById('rate').value) / 100 / 12;
+      const n = parseFloat(document.getElementById('years').value) * 12;
+      
+      const emi = p * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+      const total = emi * n;
+      
+      document.getElementById('result').innerHTML = `
+        EMI: ₹${emi.toFixed(2)}<br>
+        Total: ₹${total.toFixed(2)}
+      `;
+    }
+  </script>

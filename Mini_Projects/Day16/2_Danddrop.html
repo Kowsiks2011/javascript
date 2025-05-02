@@ -1,0 +1,29 @@
+<div id="dropArea" style="border:2px dashed #999;padding:20px;text-align:center">
+    Drop files here or <input type="file" id="fileInput">
+  </div>
+  <div id="fileInfo"></div>
+  
+  <script>
+    const dropArea = document.getElementById('dropArea');
+    const fileInput = document.getElementById('fileInput');
+    
+    dropArea.addEventListener('dragover', e => e.preventDefault());
+    dropArea.addEventListener('drop', e => {
+      e.preventDefault();
+      fileInput.files = e.dataTransfer.files;
+      showFileInfo();
+    });
+  
+    fileInput.addEventListener('change', showFileInfo);
+  
+    function showFileInfo() {
+      const file = fileInput.files[0];
+      if (file) {
+        document.getElementById('fileInfo').innerHTML = `
+          Name: ${file.name}<br>
+          Size: ${Math.round(file.size/1024)} KB<br>
+          Type: ${file.type}
+        `;
+      }
+    }
+  </script>

@@ -1,0 +1,16 @@
+<audio id="player" src=""></audio>
+<div>
+  <button onclick="document.getElementById('player').play()">Play</button>
+  <button onclick="document.getElementById('player').pause()">Pause</button>
+  <input type="range" oninput="document.getElementById('player').volume=this.value" min="0" max="1" step="0.1" value="1">
+  <input type="file" id="musicFile" accept="audio/*">
+</div>
+
+<script>
+  document.getElementById('musicFile').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      document.getElementById('player').src = URL.createObjectURL(file);
+    }
+  });
+</script>

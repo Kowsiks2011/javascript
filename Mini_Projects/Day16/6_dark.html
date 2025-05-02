@@ -1,0 +1,15 @@
+<button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+<script>
+  function toggleDarkMode() {
+    document.body.style.backgroundColor = 
+      document.body.style.backgroundColor === 'black' ? 'white' : 'black';
+    document.body.style.color = 
+      document.body.style.color === 'white' ? 'black' : 'white';
+    localStorage.setItem('darkMode', document.body.style.backgroundColor === 'black');
+  }
+
+  if (localStorage.getItem('darkMode')) {
+    toggleDarkMode(); // Apply saved preference
+  }
+</script>

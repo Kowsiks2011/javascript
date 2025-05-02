@@ -1,0 +1,28 @@
+<div>
+    <img id="slider" src="" width="200">
+    <div>
+      <button onclick="prevImage()">Prev</button>
+      <button onclick="nextImage()">Next</button>
+    </div>
+  </div>
+  
+  <script>
+    const images = ['image1.jpg', 'image2.jpg', 'image3.jpg'];
+    let current = 0;
+    
+    function showImage() {
+      document.getElementById('slider').src = images[current];
+    }
+    
+    function nextImage() {
+      current = (current + 1) % images.length;
+      showImage();
+    }
+    
+    function prevImage() {
+      current = (current - 1 + images.length) % images.length;
+      showImage();
+    }
+    
+    showImage();
+  </script>

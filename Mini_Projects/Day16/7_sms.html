@@ -1,0 +1,77 @@
+<div>
+    <h2>Student Management</h2>
+    <input id="name" placeholder="Name">
+    <input id="age" placeholder="Age" type="number">
+    <input id="class" placeholder="Class">
+    <input id="grade" placeholder="Grade">
+    <button onclick="addStudent()">Add</button>
+    <input id="search" placeholder="Search by name" oninput="searchStudents()">
+    <table id="students" border="1" style="width:100%;margin-top:10px">
+      <tr><th>Name</th><th>Age</th><th>Class</th><th>Grade</th><th>Actions</th></tr>
+    </table>
+  </div>
+  
+  <script>
+  let students = JSON.parse(localStorage.getItem('students')) || [];
+  
+  function renderStudents(list = students) {
+    const table = document.getElementById('students');
+    while(table.rows.length > 1) table.deleteRow(1);
+    
+    list.forEach((student, i) => {
+      const row = table.insertRow();
+      row.innerHTML = `
+        <td>${student.name}</td>
+        <td>${student.age}</td>
+        <td>${student.class}</td>
+        <td>${student.grade}</td>
+        <td>
+          <button onclick="editStudent(${i})">Edit</button>
+          <button onclick="deleteStudent(${i})">Delete</button>
+        </td>
+      `;
+    });
+  }
+  
+  function addStudent() {
+    const student = {
+      name: document.getElementById('name').value,
+      age: document.getElementById('age').value,
+      class: document.getElementById('class').value,
+      grade: document.getElementById('grade').value
+    };
+    students.push(student);
+    saveStudents();
+    renderStudents();
+  }
+  
+  function editStudent(index) {
+    const student = students[index];
+    document.getElementById('name').value = student.name;
+    document.getElementById('age').value = student.age;
+    document.getElementById('class').value = student.class;
+    document.getElementById('grade').value = student.grade;
+    students.splice(index, 1);
+    saveStudents();
+    renderStudents();
+  }
+  
+  function deleteStudent(index) {
+    if(confirm('Delete this student?')) {
+      students.splice(index, 1);
+      saveStudents();
+      renderStudents();
+    }
+  }
+  
+  function searchStudents() {
+    const term = document.getElementById('search').value.toLowerCase();
+    renderStudents(students.filter(s => s.name.toLowerCase().includes(term)));
+  }
+  
+  function saveStudents() {
+    localStorage.setItem('students', JSON.stringify(students));
+  }
+  
+  renderStudents();
+  </script>
